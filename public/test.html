@@ -14,34 +14,48 @@ var scene = new THREE.Scene();
 // レンダラー
 var renderer = new THREE.WebGLRenderer();
 //renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setSize( 100, 100 );
+ renderer.setSize( 100, 100 );
+ renderer.setViewport ( 0, 0, 100,100 );
 document.body.appendChild( renderer.domElement );
 
 // カメラ
 var camera = new THREE.PerspectiveCamera( 
-        50,
-        window.innerWidth / window.innerHeight,
-        1, 1000 );
+        60,
+        1,
+        0.1, 1000 );
         
-camera.position.set(0, 0, 100);
+camera.position.set(0, 0, 0);
 
 // マウスコントロール
 //var controls = new THREE.(camera);
 
 // ライト
-var directionalLight = new THREE.DirectionalLight('#aaaaff', 1);
+var directionalLight = new THREE.DirectionalLight('#FFFFDD', 1);
 directionalLight.position.set(0, 10, 10);
 scene.add(directionalLight);
 
 // キューブ
-var geometry = new THREE.BoxGeometry(12,12,12);
-var material = new THREE.MeshPhongMaterial( { color: '#ffffff' } );
-var cube = new THREE.Mesh( geometry, material );
+//var geometry = new THREE.BoxGeometry(12,12,12);
+//球
+var geometry = new THREE.SphereGeometry(0.1);
+var material =new THREE.MeshStandardMaterial( {
+    color: 0xFFC355,
+    roughness: 0.5,
+    metalness: 0.5
+} );
+var sphere = new THREE.Mesh( geometry, material );
 var cube2 = new THREE.Mesh( geometry, material );
-cube.position.set(-0.5, 0, 0);
-cube2.position.set(30, 0, 0);
-cube.add(cube2);
-scene.add( cube );
+//cube.position=new THREE.Vector3(0,0,1);
+sphere.position.set(0, 0, -1);
+
+       sphere.position.applyQuaternion(new THREE.Quaternion()
+            .setFromEuler(new THREE.Euler( 0.25, 0, 0, 'XYZ' )));
+    
+cube2.position.set(-0.5,-0.5,0);
+
+sphere.add(cube2);
+//cube2.add(cube2);
+scene.add( sphere );
 
 
 
@@ -49,9 +63,10 @@ scene.add( cube );
 // レンダリング
 function render() {
     requestAnimationFrame(render);
-    cube.rotation.x += 0.01;
+    //cube.rotation.x += 0.01;
     
-    cube.rotation.y += 0.01;
+    sphere.rotation.y += 0.122;
+    camera.rotation.x += 0.0;
     //controls.update();
     renderer.render(scene, camera);
 }
