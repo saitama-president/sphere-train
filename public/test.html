@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>test 3D scene</title>
+        <script src="js/three.min.js"></script>
+    </head>
+    <body>
+        <script>
+var scene = new THREE.Scene();
+
+// レンダラー
+var renderer = new THREE.WebGLRenderer();
+//renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setSize( 100, 100 );
+document.body.appendChild( renderer.domElement );
+
+// カメラ
+var camera = new THREE.PerspectiveCamera( 
+        50,
+        window.innerWidth / window.innerHeight,
+        1, 1000 );
+        
+camera.position.set(0, 0, 100);
+
+// マウスコントロール
+//var controls = new THREE.(camera);
+
+// ライト
+var directionalLight = new THREE.DirectionalLight('#aaaaff', 1);
+directionalLight.position.set(0, 10, 10);
+scene.add(directionalLight);
+
+// キューブ
+var geometry = new THREE.BoxGeometry(12,12,12);
+var material = new THREE.MeshPhongMaterial( { color: '#ffffff' } );
+var cube = new THREE.Mesh( geometry, material );
+var cube2 = new THREE.Mesh( geometry, material );
+cube.position.set(-0.5, 0, 0);
+cube2.position.set(30, 0, 0);
+cube.add(cube2);
+scene.add( cube );
+
+
+
+
+// レンダリング
+function render() {
+    requestAnimationFrame(render);
+    cube.rotation.x += 0.01;
+    
+    cube.rotation.y += 0.01;
+    //controls.update();
+    renderer.render(scene, camera);
+}
+render();            
+        </script>
+    </body>
+</html>
